@@ -64,11 +64,11 @@ class Post(models.Model):
             self.slug = slugify(self.title)
         super().save(*args, **kwargs)
 
-    # def delete(self, *args, **kwargs):
-    #     for img in self.images.all():
-    #         storage, path = img.image_file.storage, img.image_file.path
-    #         storage.delete(path)
-    #     super().delete(*args, **kwargs)
+    def delete(self, *args, **kwargs):
+        for img in self.images.all():
+            storage, path = img.image_file.storage, img.image_file.path
+            storage.delete(path)
+        super().delete(*args, **kwargs)
 
 
 class Ticket(models.Model):
@@ -102,7 +102,7 @@ class Comment(models.Model):
 
 class Image(models.Model):
     post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name="images")
-    # image_file = ResizedImageField(upload_to="post_images/", size=[600, 400], quality=100, crop=['middle', 'center'])
+    image_file = ResizedImageField(upload_to="post_images/", size=[600, 400], quality=100, crop=['middle', 'center'])
     title = models.CharField(max_length=40)
     description = models.TextField(max_length=250)
     created = models.DateTimeField(auto_now_add=True)
@@ -113,18 +113,18 @@ class Image(models.Model):
             models.Index(fields=['created'])
         ]
 
-    # def delete(self, *args, **kwargs):
-    #     storage, path = self.image_file.storage, self.image_file.path
-    #     storage.delete(path)
-    #     super().delete(*args, **kwargs)
+    def delete(self, *args, **kwargs):
+        storage, path = self.image_file.storage, self.image_file.path
+        storage.delete(path)
+        super().delete(*args, **kwargs)
 
 
 class Account(models.Model):
     user = models.OneToOneField(User, related_name="account", on_delete=models.CASCADE)
     date_of_birth = models.DateField(blank=True, null=True)
     bio = models.TextField(max_length=200, blank=True, null=True)
-    # photo = ResizedImageField(upload_to="account_images/", size=[500, 500], quality=100, crop=['middle', 'center'],
-    #                           blank=True, null=True)
+    photo = ResizedImageField(upload_to="account_images/", size=[500, 500], quality=100, crop=['middle', 'center'],
+                              blank=True, null=True)
     job = models.CharField(max_length=50, blank=True, null=True)
 
     def __str__(self):
