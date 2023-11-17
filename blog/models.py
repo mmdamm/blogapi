@@ -1,7 +1,7 @@
 import django.contrib.auth
 from django.db import models
 from django.utils import timezone
-from django.contrib.auth.models import User
+from django.contrib.auth.models import AbstractUser
 from django.urls import reverse
 from django.forms import Form
 from django_resized import ResizedImageField
@@ -11,6 +11,16 @@ from django.template.defaultfilters import slugify
 
 
 # Create your models here.
+
+class CustomUser(AbstractUser):
+    date_of_birth = models.DateField(blank=True, null=True)
+    bio = models.TextField(null=True, blank=True)
+    photo = models.ImageField(upload_to="account_images/", blank=True, null=True)
+    job = models.CharField(max_length=250, null=True, blank=True)
+    phone = models.CharField(max_length=11, null=True, blank=True)
+
+    def __str__(self):
+        return self.username
 
 
 class PublishedManager(models.Manager):
@@ -31,7 +41,7 @@ class Post(models.Model):
         ('OT', 'Other')
     )
     # relations
-    author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user_posts')
+    author = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='user_posts')
 
     # data
     title = models.CharField(max_length=250)
@@ -120,7 +130,7 @@ class Image(models.Model):
 
 
 class Account(models.Model):
-    user = models.OneToOneField(User, related_name="account", on_delete=models.CASCADE)
+    user = models.OneToOneField(CustomUser, related_name="account", on_delete=models.CASCADE)
     date_of_birth = models.DateField(blank=True, null=True)
     bio = models.TextField(max_length=200, blank=True, null=True)
     photo = ResizedImageField(upload_to="account_images/", size=[500, 500], quality=100, crop=['middle', 'center'],

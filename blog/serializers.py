@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 
 
 class PostSerializers(serializers.ModelSerializer):
-    user_post = User()
+    author = User()
 
     class Meta:
         model = Post
@@ -18,19 +18,22 @@ class TicketSerializers(serializers.ModelSerializer):
 
 
 class CommentSerializers(serializers.ModelSerializer):
+    post = PostSerializers()
+
     class Meta:
         model = Comment
         fields = ['post', 'name', 'body', 'created']
 
 
 class UserSerializers(serializers.ModelSerializer):
-    user_post = PostSerializers(read_only=True,many=True)
+    # user_post = PostSerializers(read_only=True,many=True)
     class Meta:
         model = User
         fields = '__all__'
 
 
 class ImageSerializers(serializers.ModelSerializer):
+    post = PostSerializers(read_only=True, many=True)
 
     class Meta:
         model = Image

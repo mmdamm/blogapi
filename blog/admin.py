@@ -1,9 +1,17 @@
 from django.contrib import admin
-from . import models
 from .models import *
+from django.contrib.auth.admin import UserAdmin
 
 
 # Register your models here.
+
+
+@admin.register(CustomUser)
+class UserAdmin(UserAdmin):
+    list_display = ['username', 'first_name', 'last_name', 'phone']
+    fieldsets = UserAdmin.fieldsets + (
+        ('Additional Information', {'fields': ('date_of_birth', 'bio', 'photo', 'job', 'phone')}),
+    )
 
 
 @admin.register(Post)
@@ -39,3 +47,5 @@ class ImageAdmin(admin.ModelAdmin):
 @admin.register(Account)
 class AccountAdmin(admin.ModelAdmin):
     list_display = ['user', 'date_of_birth', 'bio', 'job', 'photo']
+
+

@@ -5,21 +5,17 @@ from django.contrib.auth.models import User
 
 app_name = 'blog'
 router = routers.DefaultRouter()
-router.register('posts', views.PostListViewSet, basename='post')
-router.register('ticket', views.TicketViewSet)
+router.register('posts', views.PostViewSet, basename='post')
 
 
 posts_routers = routers.NestedDefaultRouter(router, 'posts', lookup='post')
 posts_routers.register('comments', views.CommentViewSet, basename='post-comments')
+posts_routers.register('image', views.ImageViewSet, basename='image')
 
+urlpatterns = [
+    path('ticket/', views.TicketViewSet.as_view(), name='ticket'),
 
-urlpatterns = router.urls + posts_routers.urls
+]
+urlpatterns += router.urls + posts_routers.urls
 
-#
-# urlpatterns = [
-#     # path('', include(router.urls))
-#
-#
-#
-# ]
 
