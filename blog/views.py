@@ -6,6 +6,10 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth import get_user_model
 from django.shortcuts import HttpResponse
 from rest_framework import filters
+from rest_framework.authentication import SessionAuthentication, BasicAuthentication
+from rest_framework.permissions import IsAuthenticatedOrReadOnly
+from .permission import *
+from rest_framework.permissions import IsAuthenticatedOrReadOnly
 
 
 # Create your views here.
@@ -18,6 +22,8 @@ class PostViewSet(viewsets.ModelViewSet):
     search_fields = ['author__username', 'title', 'description', 'category']
     ordering_fields = ['title', 'author__username', 'reading_time']
     ordering = ['reading_time']
+    authentication_classes = [SessionAuthentication, BasicAuthentication]
+    permission_classes = [IsOwnerOrReadOnly, IsAuthenticatedOrReadOnly]
 
 
 class TicketViewSet(generics.CreateAPIView):
@@ -33,14 +39,7 @@ class CommentViewSet(viewsets.ModelViewSet):
         post_id = self.kwargs['post_pk']
         return Comment.objects.filter(post_id=post_id).all()
 
+
 class ImageViewSet(viewsets.ModelViewSet):
     queryset = Image.objects.all()
     serializer_class = ImageSerializers
-
-
-
-
-
-
-
-
