@@ -23,7 +23,7 @@ class PostViewSet(viewsets.ModelViewSet):
     ordering_fields = ['title', 'author__username', 'reading_time']
     ordering = ['reading_time']
     authentication_classes = [BasicAuthentication, SessionAuthentication]
-    permission_classes = [IsOwnerOrSuperUser]
+    permission_classes = [IsAuthor]
 
 
 class TicketViewSet(generics.CreateAPIView):
@@ -40,3 +40,8 @@ class CommentViewSet(viewsets.ModelViewSet):
         return Comment.objects.filter(post_id=post_id).all()
 
 
+class UserViewSet(viewsets.ModelViewSet):
+    queryset = CustomUser.objects.all()
+    serializer_class = UserSerializers
+    authentication_classes = [BasicAuthentication, SessionAuthentication]
+    permission_classes = [IsSuperUser]

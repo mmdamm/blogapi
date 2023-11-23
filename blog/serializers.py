@@ -28,8 +28,8 @@ class CommentSerializers(serializers.ModelSerializer):
 class UserSerializers(serializers.ModelSerializer):
     # user_post = PostSerializers(read_only=True,many=True)
     class Meta:
-        model = User
-        fields = '__all__'
+        model = CustomUser
+        exclude = ['user_permissions','is_superuser', 'is_active']
 
 
 class ImageSerializers(serializers.ModelSerializer):

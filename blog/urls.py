@@ -6,6 +6,7 @@ from django.contrib.auth.models import User
 app_name = 'blog'
 router = routers.DefaultRouter()
 router.register('posts', views.PostViewSet, basename='post')
+router.register('users', views.UserViewSet , basename='user')
 
 
 posts_routers = routers.NestedDefaultRouter(router, 'posts', lookup='post')
