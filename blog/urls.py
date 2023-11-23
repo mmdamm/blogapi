@@ -10,7 +10,7 @@ router.register('posts', views.PostViewSet, basename='post')
 
 posts_routers = routers.NestedDefaultRouter(router, 'posts', lookup='post')
 posts_routers.register('comments', views.CommentViewSet, basename='post-comments')
-posts_routers.register('image', views.ImageViewSet, basename='image')
+
 
 urlpatterns = [
     path('ticket/', views.TicketViewSet.as_view(), name='ticket'),

@@ -22,8 +22,8 @@ class PostViewSet(viewsets.ModelViewSet):
     search_fields = ['author__username', 'title', 'description', 'category']
     ordering_fields = ['title', 'author__username', 'reading_time']
     ordering = ['reading_time']
-    authentication_classes = [SessionAuthentication, BasicAuthentication]
-    permission_classes = [IsOwnerOrReadOnly, IsAuthenticatedOrReadOnly]
+    authentication_classes = [BasicAuthentication, SessionAuthentication]
+    permission_classes = [IsOwnerOrSuperUser]
 
 
 class TicketViewSet(generics.CreateAPIView):
@@ -40,6 +40,3 @@ class CommentViewSet(viewsets.ModelViewSet):
         return Comment.objects.filter(post_id=post_id).all()
 
 
-class ImageViewSet(viewsets.ModelViewSet):
-    queryset = Image.objects.all()
-    serializer_class = ImageSerializers

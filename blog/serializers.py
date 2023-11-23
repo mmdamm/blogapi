@@ -8,7 +8,7 @@ class PostSerializers(serializers.ModelSerializer):
 
     class Meta:
         model = Post
-        fields = ['title', 'description', 'category', 'reading_time', 'author']
+        fields = ['title', 'description', 'category', 'reading_time', 'author', 'id']
 
 
 class TicketSerializers(serializers.ModelSerializer):
