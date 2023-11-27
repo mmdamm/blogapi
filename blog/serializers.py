@@ -5,10 +5,11 @@ from django.contrib.auth.models import User
 
 class PostSerializers(serializers.ModelSerializer):
     author = User()
+    image = 'ImageSerializers()'
 
     class Meta:
         model = Post
-        fields = ['title', 'description', 'category', 'reading_time', 'author', 'id']
+        fields = ['title', 'description', 'category', 'reading_time', 'author', 'id', 'image']
 
 
 class TicketSerializers(serializers.ModelSerializer):
@@ -29,7 +30,7 @@ class UserSerializers(serializers.ModelSerializer):
     # user_post = PostSerializers(read_only=True,many=True)
     class Meta:
         model = CustomUser
-        exclude = ['user_permissions','is_superuser', 'is_active']
+        exclude = ['user_permissions', 'is_superuser', 'is_active']
 
 
 class ImageSerializers(serializers.ModelSerializer):

@@ -53,7 +53,6 @@ class Post(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     status = models.CharField(max_length=2, choices=Status.choices, default=Status.DRAFT)
     category = models.CharField(max_length=20, choices=CATEGORY_CHOICES, default='Other')
-
     reading_time = models.PositiveIntegerField(default=None)
 
     class Meta:
