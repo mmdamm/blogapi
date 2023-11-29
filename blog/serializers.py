@@ -3,13 +3,20 @@ from .models import *
 from django.contrib.auth.models import User
 
 
+class ImageSerializers(serializers.ModelSerializer):
+
+    class Meta:
+        model = ImageBlog
+        fields = ['title_image', 'description']
+
+
 class PostSerializers(serializers.ModelSerializer):
     author = User()
-    image = 'ImageSerializers()'
+    images = ImageSerializers(read_only=True, many=True)
 
     class Meta:
         model = Post
-        fields = ['title', 'description', 'category', 'reading_time', 'author', 'id', 'image']
+        fields = ['title', 'author','description', 'category', 'reading_time', 'id','images']
 
 
 class TicketSerializers(serializers.ModelSerializer):
@@ -19,11 +26,11 @@ class TicketSerializers(serializers.ModelSerializer):
 
 
 class CommentSerializers(serializers.ModelSerializer):
-    post = PostSerializers()
+    # post = PostSerializers(read_only=True,many=True)
 
     class Meta:
         model = Comment
-        fields = ['post', 'name', 'body', 'created']
+        fields = ['name', 'body', 'created']
 
 
 class UserSerializers(serializers.ModelSerializer):
@@ -31,11 +38,3 @@ class UserSerializers(serializers.ModelSerializer):
     class Meta:
         model = CustomUser
         exclude = ['user_permissions', 'is_superuser', 'is_active']
-
-
-class ImageSerializers(serializers.ModelSerializer):
-    post = PostSerializers(read_only=True, many=True)
-
-    class Meta:
-        model = Image
-        fields = '__all__'

@@ -1,4 +1,5 @@
 from rest_framework.permissions import BasePermission
+from .models import *
 
 SAFE_METHODS = ('GET', 'HEAD', 'OPTIONS')
 
@@ -19,16 +20,6 @@ class IsAuthor(BasePermission):
             return True
 
 
-# class IsSuperUser(BasePermission):
-#     def has_permission(self, request, view):
-#         if request.method == "POST":
-#             if request.user and not request.user.is_authenticated:
-#                 print("============================================")
-#                 return True
-#         # return bool(
-#         #     request.user.is_authenticated and request.user.is_superuser
-#         #
-#         # )
 
 class IsSuperUser(BasePermission):
     def has_permission(self, request, view):

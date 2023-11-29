@@ -19,5 +19,3 @@ urlpatterns = [
 
 ]
 urlpatterns += router.urls + posts_routers.urls
-
-

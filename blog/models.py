@@ -109,10 +109,10 @@ class Comment(models.Model):
         return f"{self.name}: {self.post}"
 
 
-class Image(models.Model):
+class ImageBlog(models.Model):
     post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name="images")
-    image_file = ResizedImageField(upload_to="post_images/", size=[600, 400], quality=100, crop=['middle', 'center'])
-    title = models.CharField(max_length=40)
+    image_file = models.ImageField(upload_to="post_images/", width_field=200, height_field=200)
+    title_image = models.CharField(max_length=40)
     description = models.TextField(max_length=250)
     created = models.DateTimeField(auto_now_add=True)
 

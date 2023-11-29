@@ -30,19 +30,21 @@ class PostViewSet(viewsets.ModelViewSet):
     permission_classes = [IsOwnerOrSuperUser]
 
 
-
 class TicketViewSet(generics.CreateAPIView):
     queryset = Ticket.objects.all()
     serializer_class = TicketSerializers
+    authentication_classes = [SessionAuthentication, BasicAuthentication]
 
 
 class CommentViewSet(viewsets.ModelViewSet):
+    queryset = Comment.objects.all()
     serializer_class = CommentSerializers
+    authentication_classes = [SessionAuthentication, BasicAuthentication]
     ordering = ['created']
 
-    def get_queryset(self):
-        post_id = self.kwargs['post_pk']
-        return Comment.objects.filter(post_id=post_id).all()
+    # def get_queryset(self):
+    #     post_id = self.kwargs['post_pk']
+    #     return Comment.objects.filter(post_id=post_id).all()
 
 
 class UserViewSet(viewsets.ModelViewSet):
@@ -53,20 +55,13 @@ class UserViewSet(viewsets.ModelViewSet):
 
 
 class ImageViewSet(viewsets.ModelViewSet):
-    queryset = Image.objects.all()
+    queryset = ImageBlog.objects.all()
     serializer_class = ImageSerializers
     parser_classes = [FormParser, MultiPartParser]
     authentication_classes = [SessionAuthentication, BasicAuthentication]
 
-    def post(self, request, *args, **kwargs):
-        print('-------------------------------')
+    def create(self, request, *args, **kwargs):
         print(request.data)
-        print('-------------------------------')
-        # author = request.data['author']
         file = request.data['image_file']
-        # user = request.user
-        # user.image = file
-        # user.save()
-        Image.objects.create(title =  file,post_id= 1)
-        # fil.save()
+        ImageBlog.objects.create(image_file=file)
         return Response("Image updated!", status=status.HTTP_200_OK)

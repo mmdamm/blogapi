@@ -5,6 +5,14 @@ from django.contrib.auth.admin import UserAdmin
 
 # Register your models here.
 
+class ImageInline(admin.TabularInline):
+    model = ImageBlog
+    extra = 0
+
+
+class CommentInline(admin.TabularInline):
+    model = Comment
+    extra = 0
 
 @admin.register(CustomUser)
 class UserAdmin(UserAdmin):
@@ -25,6 +33,7 @@ class Postadmin(admin.ModelAdmin):
     prepopulated_fields = {'slug': ['title']}
     list_editable = ['status']
     list_display_links = ['author', 'title']
+    inlines = [ImageInline, CommentInline]
 
 
 @admin.register(Ticket)
@@ -39,9 +48,9 @@ class CommentAdmin(admin.ModelAdmin):
     search_fields = ['created', 'name']
 
 
-@admin.register(Image)
+@admin.register(ImageBlog)
 class ImageAdmin(admin.ModelAdmin):
-    list_display = ['post', 'title', 'created']
+    list_display = ['post', 'title_image', 'created']
 
 
 @admin.register(Account)
