@@ -24,7 +24,7 @@ class UserAdmin(UserAdmin):
 
 @admin.register(Post)
 class Postadmin(admin.ModelAdmin):
-    list_display = ['title', 'author', 'status', 'publish', 'category']
+    list_display = ['title', 'author', 'status', 'publish', 'category','id']
     ordering = ['author', 'title', 'category']
     list_filter = ['author', 'status', 'publish', 'category']
     search_fields = ['status', 'description', 'author', 'category']

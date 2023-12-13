@@ -11,8 +11,7 @@ from django.contrib.auth import get_user_model
 from django.shortcuts import HttpResponse
 from rest_framework import filters
 from rest_framework.authentication import SessionAuthentication, BasicAuthentication
-from rest_framework.permissions import IsAuthenticatedOrReadOnly
-from .permission import *
+from rest_framework.permissions import *
 from rest_framework.parsers import MultiPartParser, FormParser
 
 
@@ -27,13 +26,14 @@ class PostViewSet(viewsets.ModelViewSet):
     ordering_fields = ['title', 'author__username', 'reading_time']
     ordering = ['reading_time']
     authentication_classes = [SessionAuthentication, BasicAuthentication]
-    permission_classes = [IsOwnerOrSuperUser]
+    permission_classes = [IsAdminUser, IsAuthenticatedOrReadOnly]
 
 
 class TicketViewSet(generics.CreateAPIView):
     queryset = Ticket.objects.all()
     serializer_class = TicketSerializers
     authentication_classes = [SessionAuthentication, BasicAuthentication]
+    permission_classes = [IsAuthenticated]
 
 
 class CommentViewSet(viewsets.ModelViewSet):
@@ -41,17 +41,14 @@ class CommentViewSet(viewsets.ModelViewSet):
     serializer_class = CommentSerializers
     authentication_classes = [SessionAuthentication, BasicAuthentication]
     ordering = ['created']
-
-    # def get_queryset(self):
-    #     post_id = self.kwargs['post_pk']
-    #     return Comment.objects.filter(post_id=post_id).all()
+    permission_classes = [IsAuthenticated]
 
 
 class UserViewSet(viewsets.ModelViewSet):
     queryset = CustomUser.objects.all()
     serializer_class = UserSerializers
     authentication_classes = [SessionAuthentication, BasicAuthentication]
-    permission_classes = [IsSuperUser]
+    permission_classes = [IsAdminUser]
 
 
 class ImageViewSet(viewsets.ModelViewSet):
@@ -60,8 +57,14 @@ class ImageViewSet(viewsets.ModelViewSet):
     parser_classes = [FormParser, MultiPartParser]
     authentication_classes = [SessionAuthentication, BasicAuthentication]
 
-    def create(self, request, *args, **kwargs):
-        print(request.data)
-        file = request.data['image_file']
-        ImageBlog.objects.create(image_file=file)
-        return Response("Image updated!", status=status.HTTP_200_OK)
+    # def create(self, request, *args, **kwargs):
+    #     print(request.data)
+    #     title_image = request.data['title_image']
+    #     description = request.data['description']
+    #     post = request.data['post']
+    #     image_file = request.data['image_file']
+    #     ImageBlog.objects.create(title_image=title_image, description=description, post_id=post, image_file=image_file)
+
+        # file = request.data['image_file']
+        # ImageBlog.objects.create(image_file=file)
+        # return Response("Image updated!", status=status.HTTP_200_OK)

@@ -4,10 +4,12 @@ from django.contrib.auth.models import User
 
 
 class ImageSerializers(serializers.ModelSerializer):
-
     class Meta:
         model = ImageBlog
-        fields = ['title_image', 'description']
+        fields = ['title_image', 'description', 'image_file', 'post']
+
+    def create(self, validated_data):
+        return ImageBlog.objects.create(**validated_data)
 
 
 class PostSerializers(serializers.ModelSerializer):
@@ -16,7 +18,7 @@ class PostSerializers(serializers.ModelSerializer):
 
     class Meta:
         model = Post
-        fields = ['title', 'author','description', 'category', 'reading_time', 'id','images']
+        fields = ['title', 'author', 'description', 'category', 'reading_time', 'images']
 
 
 class TicketSerializers(serializers.ModelSerializer):

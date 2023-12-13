@@ -54,19 +54,15 @@ class Post(models.Model):
     status = models.CharField(max_length=2, choices=Status.choices, default=Status.DRAFT)
     category = models.CharField(max_length=20, choices=CATEGORY_CHOICES, default='Other')
     reading_time = models.PositiveIntegerField(default=None)
+    object = models.Manager()
+    published = PublishedManager()
 
     class Meta:
         ordering = ['-publish']
         indexes = [models.Index(fields=['-publish'])]
 
-    object = models.Manager()
-    published = PublishedManager()
-
     def __str__(self):
         return self.title
-
-    def get_absolute_url(self):
-        return reverse('blog:posts_detail', args=[self.id])
 
     def save(self, *args, **kwargs):
         if not self.slug:
@@ -128,6 +124,7 @@ class ImageBlog(models.Model):
         super().delete(*args, **kwargs)
 
 
+
 class Account(models.Model):
     user = models.OneToOneField(CustomUser, related_name="account", on_delete=models.CASCADE)
     date_of_birth = models.DateField(blank=True, null=True)
@@ -138,4 +135,3 @@ class Account(models.Model):
 
     def __str__(self):
         return self.user.username
-
