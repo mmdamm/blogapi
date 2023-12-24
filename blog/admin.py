@@ -25,7 +25,7 @@ class UserAdmin(UserAdmin):
 
 @admin.register(Post)
 class Postadmin(admin.ModelAdmin):
-    list_display = ['title', 'author', 'status', 'publish', 'category', 'id']
+    list_display = ['title', 'author', 'status', 'publish', 'id']
     ordering = ['author', 'title', 'category']
     list_filter = ['author', 'status', 'publish', 'category']
     search_fields = ['status', 'description', 'author', 'category']
@@ -55,3 +55,5 @@ class ImageAdmin(admin.ModelAdmin):
 
 
 admin.site.register(IpAddress)
+
+admin.site.register(Category)

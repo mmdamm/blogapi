@@ -28,18 +28,16 @@ class PublishedManager(models.Manager):
         return super().get_queryset().filter(status=Post.Status.PUBLISHED)
 
 
+class Category(models.Model):
+    name = models.CharField(max_length=200)
+
+
 class Post(models.Model):
     class Status(models.TextChoices):
         DRAFT = 'DA', 'Draft'
         PUBLISHED = 'PU', 'Published'
         REJECTED = 'RJ', 'Rejected'
 
-    CATEGORY_CHOICES = (
-        ('PL', 'Programming Language'),
-        ('BC', 'Block Chain'),
-        ('TL', 'Technology'),
-        ('OT', 'Other')
-    )
     # relations
     author = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='user_posts')
 
@@ -52,7 +50,7 @@ class Post(models.Model):
     updated = models.DateTimeField(auto_now=True)
     created = models.DateTimeField(auto_now_add=True)
     status = models.CharField(max_length=2, choices=Status.choices, default=Status.DRAFT)
-    category = models.CharField(max_length=20, choices=CATEGORY_CHOICES, default='Other')
+    category = models.ManyToManyField(to=Category, related_name='category')
     reading_time = models.PositiveIntegerField(default=None)
     object = models.Manager()
     published = PublishedManager()
@@ -126,4 +124,3 @@ class ImageBlog(models.Model):
 
 class IpAddress(models.Model):
     ip_address = models.GenericIPAddressField()
-
