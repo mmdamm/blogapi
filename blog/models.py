@@ -93,7 +93,7 @@ class Comment(models.Model):
     body = models.TextField()
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
-    active = models.BooleanField(default=False)
+    active = models.BooleanField(default=True)
 
     class Meta:
         ordering = ['created']
@@ -125,13 +125,4 @@ class ImageBlog(models.Model):
 
 
 
-class Account(models.Model):
-    user = models.OneToOneField(CustomUser, related_name="account", on_delete=models.CASCADE)
-    date_of_birth = models.DateField(blank=True, null=True)
-    bio = models.TextField(max_length=200, blank=True, null=True)
-    photo = ResizedImageField(upload_to="account_images/", size=[500, 500], quality=100, crop=['middle', 'center'],
-                              blank=True, null=True)
-    job = models.CharField(max_length=50, blank=True, null=True)
 
-    def __str__(self):
-        return self.user.username

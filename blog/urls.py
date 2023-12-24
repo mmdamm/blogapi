@@ -7,7 +7,7 @@ app_name = 'blog'
 router = routers.DefaultRouter()
 router.register('posts', views.PostViewSet, basename='post')
 router.register('users', views.UserViewSet, basename='user')
-router.register('image', views.ImageViewSet, basename='image')
+
 
 posts_routers = routers.NestedDefaultRouter(router, 'posts', lookup='post')
 posts_routers.register('comments', views.CommentViewSet, basename='post-comments')

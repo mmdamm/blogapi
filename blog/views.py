@@ -13,6 +13,7 @@ from rest_framework import filters
 from rest_framework.authentication import SessionAuthentication, BasicAuthentication
 from rest_framework.permissions import *
 from rest_framework.parsers import MultiPartParser, FormParser
+from .PersianSwear import PersianSwear
 
 
 # Create your views here.
@@ -37,11 +38,17 @@ class TicketViewSet(generics.CreateAPIView):
 
 
 class CommentViewSet(viewsets.ModelViewSet):
-    queryset = Comment.objects.all()
+    queryset = Comment.objects.filter(active=True)
     serializer_class = CommentSerializers
     authentication_classes = [SessionAuthentication, BasicAuthentication]
-    ordering = ['created']
-    permission_classes = [IsAuthenticated]
+
+    def create(self, request, *args, **kwargs):
+        query = PersianSwear()
+        name = request.data['name']
+        txt = query.filter_words(request.data['body'])
+        post = request.data['post']
+        Comment.objects.create(name=name, body=txt, post_id=post)
+        return Response("Comment receive!", status=status.HTTP_200_OK)
 
 
 class UserViewSet(viewsets.ModelViewSet):
@@ -57,14 +64,10 @@ class ImageViewSet(viewsets.ModelViewSet):
     parser_classes = [FormParser, MultiPartParser]
     authentication_classes = [SessionAuthentication, BasicAuthentication]
 
-    # def create(self, request, *args, **kwargs):
-    #     print(request.data)
-    #     title_image = request.data['title_image']
-    #     description = request.data['description']
-    #     post = request.data['post']
-    #     image_file = request.data['image_file']
-    #     ImageBlog.objects.create(title_image=title_image, description=description, post_id=post, image_file=image_file)
+    # def create(self, request, *args, **kwargs): print(request.data) title_image = request.data['title_image']
+    # description = request.data['description'] post = request.data['post'] image_file = request.data['image_file']
+    # ImageBlog.objects.create(title_image=title_image, description=description, post_id=post, image_file=image_file)
 
-        # file = request.data['image_file']
-        # ImageBlog.objects.create(image_file=file)
-        # return Response("Image updated!", status=status.HTTP_200_OK)
+    # file = request.data['image_file']
+    # ImageBlog.objects.create(image_file=file)
+    # return Response("Image updated!", status=status.HTTP_200_OK)
