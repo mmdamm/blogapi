@@ -124,5 +124,6 @@ class ImageBlog(models.Model):
         super().delete(*args, **kwargs)
 
 
-
+class IpAddress(models.Model):
+    ip_address = models.GenericIPAddressField()
 

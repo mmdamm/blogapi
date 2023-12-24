@@ -14,6 +14,7 @@ class CommentInline(admin.TabularInline):
     model = Comment
     extra = 0
 
+
 @admin.register(CustomUser)
 class UserAdmin(UserAdmin):
     list_display = ['username', 'first_name', 'last_name', 'phone', 'is_staff', 'is_active']
@@ -24,7 +25,7 @@ class UserAdmin(UserAdmin):
 
 @admin.register(Post)
 class Postadmin(admin.ModelAdmin):
-    list_display = ['title', 'author', 'status', 'publish', 'category','id']
+    list_display = ['title', 'author', 'status', 'publish', 'category', 'id']
     ordering = ['author', 'title', 'category']
     list_filter = ['author', 'status', 'publish', 'category']
     search_fields = ['status', 'description', 'author', 'category']
@@ -53,5 +54,4 @@ class ImageAdmin(admin.ModelAdmin):
     list_display = ['post', 'title_image', 'created']
 
 
-
-
+admin.site.register(IpAddress)
