@@ -44,7 +44,7 @@ class Post(models.Model):
     # data
     title = models.CharField(max_length=250)
     description = models.TextField(max_length=250)
-    slug = models.SlugField(max_length=100)
+    slug = models.SlugField(max_length=100,allow_unicode='utf-8')
     # date
     publish = models.DateTimeField(default=timezone.now)
     updated = models.DateTimeField(auto_now=True)
